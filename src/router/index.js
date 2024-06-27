@@ -1,21 +1,29 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import AppContainer from "@/AppContainer.vue";
 import CarteleraView from '@/views/CarteleraView.vue'
+import AboutView from "../views/AboutView.vue";
 
 const routes = [
   {
     path: "/",
     component: AppContainer,
-    meta: { requiresAuth: true },
+    children: [
+      {
+        path: "",
+        component: CarteleraView,
+        name: "home",
+        meta: { requiresAuth: true },
+      }
+    ],
   },
   {
-    path: "/cartelera",
+    path: "/peliculas",
     component: AppContainer,
     children: [
       {
         path: "",
-        component: CarteleraView ,
-        name: "cartelera",
+        component: AboutView ,
+        name: "peliculas",
         meta: { requiresAuth: true },
       }
     ],

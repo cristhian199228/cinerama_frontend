@@ -5,7 +5,9 @@
       <v-img src="@/assets/cinerama.svg" alt="Logo" max-width="130"></v-img>
       <v-spacer></v-spacer>
       <v-tabs color="grey-darken-2" centered>
-        <v-tab v-for="link in links" :key="link" to="/cartelera" :text="link"></v-tab>
+        <v-tab v-for="link in links" :key="link.descripcion" :to="link.to">
+          {{ link.descripcion }}
+        </v-tab>
       </v-tabs>
       <v-spacer></v-spacer>
       <v-spacer></v-spacer>
@@ -23,14 +25,15 @@
     </v-main>
   </v-app>
 </template>
+
 <script>
 export default {
   data: () => ({
     links: [
-      'Cartelera',
-      'Peliculas',
-      'Cines',
-      'Dulceria',
+      { descripcion: 'Cartelera', to: '/' },
+      { descripcion: 'Peliculas', to: '/peliculas' },
+      { descripcion: 'Cines', to: '/cines' },
+      { descripcion: 'Dulceria', to: '/dulceria' },
     ],
   }),
 }
