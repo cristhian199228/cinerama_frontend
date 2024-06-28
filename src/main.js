@@ -7,6 +7,20 @@ import { loadFonts } from './plugins/webfontloader'
 
 loadFonts()
 
+
+axios.defaults.baseURL = process.env.VUE_APP_API_URL ?? 'http://localhost'
+axios.defaults.headers.common['Accept'] = 'application/json';
+axios.defaults.withCredentials = true
+axios.defaults.withXSRFToken = true;
+
+
+try {
+  await axios.get('/sanctum/csrf-cookie')
+  await store.dispatch('getUser')
+} catch (e) {
+  //console.error(e)
+}
+
 createApp(App)
   .use(router)
   .use(store)
