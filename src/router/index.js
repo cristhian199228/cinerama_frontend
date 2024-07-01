@@ -1,9 +1,22 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import AppContainer from "@/AppContainer.vue";
-import CarteleraView from '@/views/CarteleraView.vue'
-import AboutView from "../views/AboutView.vue";
+import CarteleraView from '@/views/CarteleraView.vue';
+import LoginView from '@/views/LoginView.vue';
+import AboutView from "@/views/AboutView.vue";
+import AdministradorView from '@/views/AdministradorView.vue';
+import CiudadesView from '@/views/administrador/CiudadesView.vue';
+import CinesView from '@/views/administrador/CinesView.vue';
+import SalasView from '@/views/administrador/SalasView.vue';
+import TiposEntradaView from '@/views/administrador/TiposEntradaView.vue';
+import PeliculasView from '@/views/administrador/PeliculasView.vue';
+import FuncionesView from '@/views/administrador/FuncionesView.vue';
 
 const routes = [
+  {
+    path: "/login",
+    component: LoginView,
+    name: "login",
+  },
   {
     path: "/",
     component: AppContainer,
@@ -13,7 +26,7 @@ const routes = [
         component: CarteleraView,
         name: "home",
         meta: { requiresAuth: true },
-      }
+      },
     ],
   },
   {
@@ -22,18 +35,35 @@ const routes = [
     children: [
       {
         path: "",
-        component: AboutView ,
+        component: AboutView,
         name: "peliculas",
         meta: { requiresAuth: true },
-      }
+      },
+    ],
+  },
+  {
+    path: "/administrador",
+    component: AppContainer,
+    children: [
+      {
+        path: "",
+        component: AdministradorView,
+        name: "administrador",
+        meta: { requiresAuth: true },
+        children: [
+          { path: "ciudades", component: CiudadesView, name: "ciudades" },
+          { path: "cines", component: CinesView, name: "cines" },
+          { path: "salas", component: SalasView, name: "salas" },
+          { path: "tipos-entrada", component: TiposEntradaView, name: "tipos-entrada" },
+          { path: "peliculas", component: PeliculasView, name: "peliculas-admin" },
+          { path: "funciones", component: FuncionesView, name: "funciones" },
+        ],
+      },
     ],
   },
   {
     path: "/about",
     name: "about",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
   },
