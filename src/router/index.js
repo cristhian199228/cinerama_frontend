@@ -10,6 +10,7 @@ import SalasView from '@/views/administrador/SalasView.vue';
 import TiposEntradaView from '@/views/administrador/TiposEntradaView.vue';
 import PeliculasView from '@/views/administrador/PeliculasView.vue';
 import FuncionesView from '@/views/administrador/FuncionesView.vue';
+import AgregarPeliculaView from '@/views/administrador/AgregarPeliculaView.vue';
 
 const routes = [
   {
@@ -57,6 +58,7 @@ const routes = [
           { path: "tipos-entrada", component: TiposEntradaView, name: "tipos-entrada" },
           { path: "peliculas", component: PeliculasView, name: "peliculas-admin" },
           { path: "funciones", component: FuncionesView, name: "funciones" },
+          { path: "peliculas/nuevo", component: AgregarPeliculaView, name: "agregar-pelicula" }, // Nueva ruta para agregar películas
         ],
       },
     ],

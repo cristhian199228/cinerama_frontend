@@ -29,12 +29,7 @@ export default {
   methods: {
     async buscar() {
       try {
-        const response = await fetch(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=es-MX&page=1&sort_by=popularity.desc&with_release_type=2|3&release_date.gte=${this.minDate}&release_date.lte=${this.maxDate}`, {
-          headers: {
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiNDYxZTUzNWE4Yjg0ZjM3NjMzMjk2MTY5MDBlNGM1OCIsIm5iZiI6MTcxOTUxMjQ3NC4wMTM4ODcsInN1YiI6IjY2NTEwN2RkZmY0OWFkZTZhYzk1ZDc5NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.iHVmO1XUI--53vXNdfd47UFlTRVttqW58MdJBrT857w',
-            'accept': 'application/json'
-          }
-        });
+        const response = await fetch(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=es-MX&page=1&sort_by=popularity.desc&with_release_type=2|3&release_date.gte=${this.minDate}&release_date.lte=${this.maxDate}`);
         const data = await response.json();
         console.log(data.results)
         this.movies = data.results;
