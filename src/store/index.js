@@ -112,18 +112,9 @@ export default createStore({
         throw new Error(await e.response.data.message);
       }
     },
-    async BuscarPelicula(_, { query }) {
+    async BuscarPelicula( _,pelicula ) {
       try {
-        let response;
-
-        response = await axios.get(`/api/buscarPelicula`, {
-          params: { query },
-          headers: {
-            Authorization: "Bearer tu-token-de-autorizacion",
-            accept: "application/json",
-          },
-        });
-        return response;
+        return await axios.post(`/api/buscarPelicula`, pelicula);
       } catch (error) {
         console.error("Error fetching movie from backend:", error);
         throw error;
