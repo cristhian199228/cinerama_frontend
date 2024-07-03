@@ -112,7 +112,7 @@ export default createStore({
         throw new Error(await e.response.data.message);
       }
     },
-    async BuscarPelicula( _,pelicula ) {
+    async BuscarPelicula(_, pelicula) {
       try {
         return await axios.post(`/api/buscarPelicula`, pelicula);
       } catch (error) {
@@ -120,6 +120,15 @@ export default createStore({
         throw error;
       }
     },
+    async fetchPeliculaById(_, id) {
+      try {
+        return await axios.post(`/api/buscarPeliculaPorId`, id);
+      } catch (error) {
+        console.error("Error fetching movie from backend:", error);
+        throw error;
+      }
+    },
   },
+
   modules: {},
 });
