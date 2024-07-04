@@ -1,57 +1,97 @@
 <template>
-  <v-container>
-    <v-row class="ma-5">
-      <v-col class="d-inline-flex">
-        <v-text-field class="mx-2" label="Fecha mínima" v-model="minDate" type="date"></v-text-field>
-        <v-text-field class="mx-2" label="Fecha máxima" v-model="maxDate" type="date"></v-text-field>
-        <v-btn color="red-accent-4" class="my-auto" @click="buscar">
-          Buscar
-        </v-btn>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col v-for="(movie, index) in movies" :key="index" class="my-2">
-        <v-img  width="300" :src="`https://image.tmdb.org/t/p/original${movie.poster_path}`" :alt="movie.title" max-width="500" />
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-card variant="">
+    <v-data-iterator :items="peliculas" :items-per-page="10" :search="search">
+      <template v-slot:header>
+        <v-toolbar class="px-2">
+          <v-text-field
+            v-model="search"
+            density="comfortable"
+            placeholder="Buscar"
+            prepend-inner-icon="mdi-magnify"
+            variant="solo"
+            clearable
+            hide-details
+          ></v-text-field>
+          <v-spacer></v-spacer>
+        </v-toolbar>
+      </template>
+
+      <template v-slot:default="{ items }">
+        <v-container class="pa-2" fluid>
+          <v-row>
+            <v-col v-for="item in items" :key="item.id" cols="auto" md="3">
+              <v-card class="pb-3" variant="text">
+                <v-img :src="getImageUrl(item.raw.poster_path_api)"></v-img>
+                <v-btn
+                  block
+                  variant="flat"
+                  color="red-accent-4"
+                  class="white--text"
+                  @click="verHorarios(item)"
+                >
+                  VER MAS
+                </v-btn>
+              </v-card>
+            </v-col>
+          </v-row>
+        </v-container>
+      </template>
+
+      <template v-slot:footer="{ page, pageCount, prevPage, nextPage }">
+        <div class="d-flex align-center justify-center pa-4">
+          <v-btn
+            :disabled="page === 1"
+            density="comfortable"
+            icon="mdi-arrow-left"
+            variant="tonal"
+            rounded
+            @click="prevPage"
+          ></v-btn>
+
+          <div class="mx-2 text-caption">
+            Página {{ page }} de {{ pageCount }}
+          </div>
+
+          <v-btn
+            :disabled="page >= pageCount"
+            density="comfortable"
+            icon="mdi-arrow-right"
+            variant="tonal"
+            rounded
+            @click="nextPage"
+          ></v-btn>
+        </div>
+      </template>
+    </v-data-iterator>
+  </v-card>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      minDate: '',
-      maxDate: '',
-      movies: []
-    };
+  data: () => ({
+    search: '',
+  }),
+  computed: {
+    peliculas() {
+      return this.$store.state.peliculas;
+    }
   },
   methods: {
-    async buscar() {
-      try {
-        const response = await fetch(`https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=es-MX&page=1&sort_by=popularity.desc&with_release_type=2|3&release_date.gte=${this.minDate}&release_date.lte=${this.maxDate}`);
-        const data = await response.json();
-        console.log(data.results)
-        this.movies = data.results;
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }
-};
+    loadPeliculas() {
+      this.$store.dispatch('fetchPeliculas');
+    },
+    getImageUrl(path) {
+      return `https://image.tmdb.org/t/p/original${path}`;
+    },
+    navigateToNuevo() {
+      this.$router.push('/administrador/peliculas/nuevo');
+    },
+    verHorarios() {
+      // Implementar la lógica para ver horarios
+    },
+  },
+  created() {
+    this.loadPeliculas();
+  },
+}
 </script>
-
-<style scoped>
-.mx-2 {
-  margin-left: 8px;
-  margin-right: 8px;
-}
-.my-auto {
-  margin-top: auto;
-  margin-bottom: auto;
-}
-.my-2 {
-  margin-top: 16px;
-  margin-bottom: 16px;
-}
-</style>

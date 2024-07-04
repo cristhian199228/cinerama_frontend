@@ -2,7 +2,8 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import AppContainer from "@/AppContainer.vue";
 import CarteleraView from '@/views/CarteleraView.vue';
 import LoginView from '@/views/LoginView.vue';
-import AboutView from "@/views/AboutView.vue";
+import PeliculasUsuarioView from "@/views/PeliculasView.vue";
+import CinesUsuarioView from '@/views/CinesView.vue';
 import AdministradorView from '@/views/AdministradorView.vue';
 import CiudadesView from '@/views/administrador/CiudadesView.vue';
 import CinesView from '@/views/administrador/CinesView.vue';
@@ -36,8 +37,20 @@ const routes = [
     children: [
       {
         path: "",
-        component: AboutView,
+        component: PeliculasUsuarioView,
         name: "peliculas",
+        meta: { requiresAuth: true },
+      },
+    ],
+  },
+  {
+    path: "/cines",
+    component: AppContainer,
+    children: [
+      {
+        path: "",
+        component: CinesUsuarioView,
+        name: "cines",
         meta: { requiresAuth: true },
       },
     ],
@@ -53,7 +66,7 @@ const routes = [
         meta: { requiresAuth: true },
         children: [
           { path: "ciudades", component: CiudadesView, name: "ciudades" },
-          { path: "cines", component: CinesView, name: "cines" },
+          { path: "cines", component: CinesView, name: "cines-admin" },
           { path: "salas", component: SalasView, name: "salas" },
           { path: "tipos-entrada", component: TiposEntradaView, name: "tipos-entrada" },
           { path: "peliculas", component: PeliculasView, name: "peliculas-admin" },
@@ -62,13 +75,7 @@ const routes = [
         ],
       },
     ],
-  },
-  {
-    path: "/about",
-    name: "about",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
-  },
+  }
 ];
 
 const router = createRouter({

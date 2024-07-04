@@ -1,7 +1,7 @@
 <template>
     <v-container>
         <v-card class="pa-3" variant="text">
-            <v-form @submit.prevent="addPelicula">
+            <v-form @submit.prevent="addPelicula" ref="form">
                 <v-autocomplete 
                     v-model:search="search" 
                     v-model="movie" 
@@ -17,31 +17,31 @@
                 <div v-if="searchCompleted">
                     <v-row>
                         <v-col cols="12" sm="6">
-                            <v-text-field label="Título" v-model="pelicula.titulo" required></v-text-field>
+                            <v-text-field label="Título" v-model="pelicula.titulo" :rules="[v => !!v || 'Título es requerido']" required></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
-                            <v-text-field label="Director" v-model="pelicula.director" required></v-text-field>
+                            <v-text-field label="Director" v-model="pelicula.director" :rules="[v => !!v || 'Director es requerido']" required></v-text-field>
                         </v-col>
                     </v-row>
 
                     <v-row>
                         <v-col cols="12" sm="6">
-                            <v-text-field label="Fecha de Estreno" v-model="pelicula.fecha_estreno" required></v-text-field>
+                            <v-text-field label="Fecha de Estreno" v-model="pelicula.fecha_estreno" :rules="[v => !!v || 'Fecha de Estreno es requerida']" required></v-text-field>
                         </v-col>
                         <v-col cols="12" sm="6">
-                            <v-text-field label="Duración (mins)" v-model="pelicula.duracion" required></v-text-field>
-                        </v-col>
-                    </v-row>
-
-                    <v-row>
-                        <v-col cols="12">
-                            <v-textarea label="Sinopsis" v-model="pelicula.sinopsis" required></v-textarea>
+                            <v-text-field label="Duración (mins)" v-model="pelicula.duracion" :rules="[v => !!v || 'Duración es requerida']" required></v-text-field>
                         </v-col>
                     </v-row>
 
                     <v-row>
                         <v-col cols="12">
-                            <v-text-field v-model="pelicula.youtube_id" label="ID de YouTube" required></v-text-field>
+                            <v-textarea label="Sinopsis" v-model="pelicula.sinopsis" :rules="[v => !!v || 'Sinopsis es requerida']" required></v-textarea>
+                        </v-col>
+                    </v-row>
+
+                    <v-row>
+                        <v-col cols="12">
+                            <v-text-field v-model="pelicula.trailer_path_api" label="ID de YouTube" :rules="[v => !!v || 'ID de YouTube es requerido']" required></v-text-field>
                         </v-col>
                     </v-row>
 
@@ -52,7 +52,7 @@
                                 <v-card>
                                     <v-img :src="getImageUrl(poster.file_path)" class="align-end" contain>
                                         <v-card-actions class="justify-center">
-                                            <v-btn text @click="selectImage('poster', poster.file_path)">Seleccionar</v-btn>
+                                            <v-btn variant="flat" :color="pelicula.poster_path_api === poster.file_path ? 'red' : ''" text @click="selectImage('poster', poster.file_path)">Seleccionar</v-btn>
                                         </v-card-actions>
                                     </v-img>
                                 </v-card>
@@ -68,7 +68,7 @@
                                     <v-img :src="getImageUrl(backdrop.file_path)" class="align-end"
                                         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)" height="200px" cover>
                                         <v-card-actions class="justify-center">
-                                            <v-btn text @click="selectImage('backdrop', backdrop.file_path)">Seleccionar</v-btn>
+                                            <v-btn variant="flat" :color="pelicula.wallpaper_path_api === backdrop.file_path ? 'red' : ''" text @click="selectImage('backdrop', backdrop.file_path)">Seleccionar</v-btn>
                                         </v-card-actions>
                                     </v-img>
                                 </v-card>
@@ -100,11 +100,12 @@ export default {
             fecha_estreno: '',
             duracion: '',
             sinopsis: '',
-            poster: null,
+            poster_path_api: null,
             posters: [],
+            wallpaper_path_api: null,
             backdrops: [],
-            backdrop: null,
-            youtube_id: '', // Campo único para el ID de YouTube
+            trailer_path_api: '', // Campo único para el ID de YouTube
+            codigo_api: null, // Añadir el campo código API
             selectedPoster: null,
             selectedBackdrop: null,
             selectedImage: null
@@ -131,11 +132,12 @@ export default {
                 this.pelicula.fecha_estreno = movieDetails.release_date;
                 this.pelicula.duracion = movieDetails.runtime;
                 this.pelicula.sinopsis = movieDetails.overview;
-                this.pelicula.poster = movieDetails.poster_path ? movieDetails.poster_path : null;
-                this.pelicula.backdrop = movieDetails.backdrop_path ? movieDetails.backdrop_path : null;
+                this.pelicula.poster_path_api = movieDetails.poster_path ? movieDetails.poster_path : null;
+                this.pelicula.wallpaper_path_api = movieDetails.backdrop_path ? movieDetails.backdrop_path : null;
                 this.pelicula.posters = movieDetails.images.posters ? movieDetails.images.posters : [];
                 this.pelicula.backdrops = movieDetails.images.backdrops ? movieDetails.images.backdrops : [];
-                this.pelicula.youtube_id = ''; // Reinicia el ID de YouTube con un campo vacío
+                this.pelicula.trailer_path_api = ''; // Reinicia el ID de YouTube con un campo vacío
+                this.pelicula.codigo_api = movieDetails.id; // Añadir el valor del código API
                 this.searchCompleted = true; // Set the search completion status to true
             } catch (error) {
                 console.error('Error fetching movie details:', error);
@@ -147,15 +149,18 @@ export default {
         selectImage(type, path) {
             if (type === 'poster') {
                 this.selectedPoster = path;
-                this.pelicula.poster = path;
+                this.pelicula.poster_path_api = path;
             } else if (type === 'backdrop') {
                 this.selectedBackdrop = path;
-                this.pelicula.backdrop = path;
+                this.pelicula.wallpaper_path_api = path;
             }
         },
         addPelicula() {
-            this.$store.dispatch('addPelicula', this.pelicula);
-            this.$router.push('/administrador/peliculas');
+            this.$refs.form.validate();
+            if (this.$refs.form.$el.checkValidity()) {
+                this.$store.dispatch('addPelicula', this.pelicula);
+                this.$router.push('/administrador/peliculas');
+            }
         }
     },
 };
