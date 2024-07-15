@@ -19,7 +19,7 @@
               <v-card class="pb-3" variant="text">
                 <v-img :src="getImageUrl(item.raw.poster_path_api)"></v-img>            
                   <v-btn block variant="flat" color="red-accent-4" class="white--text" @click="verHorarios(item)">
-                    VER MAS
+                    EDITAR
                   </v-btn>
               </v-card>
             </v-col>
@@ -79,8 +79,8 @@ export default {
     navigateToNuevo() {
       this.$router.push('/administrador/peliculas/nuevo');
     },
-    verHorarios() {
-      // Implementar la lógica para ver horarios
+    verHorarios(item) {
+      this.$router.push({ name: 'detalle-pelicula', params: { idpelicula: item.value } });
     },
   },
   created() {

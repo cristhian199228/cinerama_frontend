@@ -128,6 +128,14 @@ export default createStore({
         throw error;
       }
     },
+    async fetchPeliculaDetails(_, peliculaId) {
+      try {
+        return await axios.get(`/api/pelicula/${peliculaId}`);
+      } catch (error) {
+        console.error("Error fetching movie from backend:", error);
+        throw error;
+      }
+    },
     async addPelicula({ commit }, pelicula) {
       try {
           const response = await axios.post('/api/pelicula', {

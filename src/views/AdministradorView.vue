@@ -1,4 +1,5 @@
 <template>
+  
   <v-card variant="text">
     <v-toolbar color="red-accent-4">
       <v-toolbar-title>Panel Administrador</v-toolbar-title>

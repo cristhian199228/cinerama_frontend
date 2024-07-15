@@ -46,9 +46,9 @@
       <v-row class="mt-1">
         <v-col cols="12" offset-xl="2" offset-lg="1" xl="8" lg="10">
           <v-sheet min-height="70vh" rounded="lg">
-            <v-container>
+          
               <router-view />
-            </v-container>
+  
           </v-sheet>
         </v-col>
       </v-row>
