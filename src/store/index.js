@@ -10,6 +10,8 @@ export default createStore({
     cines: [],
     ciudades: [],
     funciones: [],
+    asientos: [],
+    localAsientos: [],
   },
   getters: {
     menus: (state) => (state.user ? state.user.rol.menu : []),
@@ -18,6 +20,9 @@ export default createStore({
     },
     cines: (state) => state.cines,
     ciudades: (state) => state.ciudades,
+    asientos: state => state.asientos,
+    localAsientos: state => state.localAsientos,
+    user: state => state.user,
   },
   mutations: {
     SET_USER(state, data) {
@@ -44,6 +49,15 @@ export default createStore({
     SET_LOADING(state, loading) {
       state.loading = loading;
     },
+    SET_ASIENTOS(state, asientos) {
+      state.asientos = asientos;
+    },
+    SET_LOCAL_ASIENTOS(state, localAsientos) {
+      state.localAsientos = localAsientos;
+    },
+    UPDATE_ASIENTO(state, { rowIndex, colIndex, color }) {
+      state.localAsientos[rowIndex][colIndex].color = color;
+    },
   },
   actions: {
     async login({ dispatch }, credentials) {
@@ -61,6 +75,20 @@ export default createStore({
       } catch (e) {
         throw new Error(await e.response.data.message);
       }
+    },
+    setAsientos({ commit }, asientos) {
+      commit("SET_ASIENTOS", asientos);
+    },
+    setLocalAsientos({ commit }, localAsientos) {
+      commit("SET_LOCAL_ASIENTOS", localAsientos);
+    },
+    updateAsiento({ commit, state }, { rowIndex, colIndex, color }) {
+      commit("UPDATE_ASIENTO", { rowIndex, colIndex, color });
+      const updatedAsientos = state.localAsientos
+        .flat()
+        .filter((asiento) => asiento.color === "red-accent-4")
+        .map((asiento) => asiento.numero);
+      commit("SET_ASIENTOS", updatedAsientos);
     },
     async getUser({ commit }) {
       try {
@@ -175,7 +203,7 @@ export default createStore({
         console.error("Error adding movie:", error);
       }
     },
-    async fetchFuncionDetails(_,id) {
+    async fetchFuncionDetails(_, id) {
       try {
         return await axios.get(`/api/funcion/${id}`);
       } catch (error) {
