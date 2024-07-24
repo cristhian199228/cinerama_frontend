@@ -9,6 +9,7 @@ export default createStore({
     salas: [],
     cines: [],
     ciudades: [],
+    funciones: [],
   },
   getters: {
     menus: (state) => (state.user ? state.user.rol.menu : []),
@@ -24,6 +25,9 @@ export default createStore({
     },
     SET_SALAS(state, salas) {
       state.salas = salas;
+    },
+    SET_FUNCIONES(state, funciones) {
+      state.funciones = funciones;
     },
     SET_CINES(state, cines) {
       state.cines = cines;
@@ -94,6 +98,11 @@ export default createStore({
         throw new Error(await e.response.data.message);
       }
     },
+    async fetchSalasById(_, id) {
+      const { data } = await axios.get(`/api/salaById/${id}`);
+      // console.log(data)
+      return data;
+    },
     async fetchTiposEntradas({ commit }) {
       try {
         const { data } = await axios.get("/api/tipoentrada");
@@ -109,6 +118,15 @@ export default createStore({
         commit("SET_PELICULAS", data);
       } catch (e) {
         commit("SET_PELICULAS", []);
+        throw new Error(await e.response.data.message);
+      }
+    },
+    async fetchFunciones({ commit }) {
+      try {
+        const { data } = await axios.get("/api/funcion");
+        commit("SET_FUNCIONES", data);
+      } catch (e) {
+        commit("SET_FUNCIONES", []);
         throw new Error(await e.response.data.message);
       }
     },
@@ -136,24 +154,35 @@ export default createStore({
         throw error;
       }
     },
+    async saveFuncion(_, form) {
+      return await axios.post(`/api/funcion`, form);
+    },
     async addPelicula({ commit }, pelicula) {
       try {
-          const response = await axios.post('/api/pelicula', {
-              titulo: pelicula.titulo,
-              director: pelicula.director,
-              fecha_estreno: pelicula.fecha_estreno,
-              duracion: pelicula.duracion,
-              sinopsis: pelicula.sinopsis,
-              codigo_api: pelicula.codigo_api, // Asumiendo que este campo debe ser manejado también
-              poster_path_api: pelicula.poster_path_api,
-              wallpaper_path_api: pelicula.wallpaper_path_api,
-              trailer_path_api: pelicula.trailer_path_api
-          });
-          commit('ADD_PELICULA', response.data);
+        const response = await axios.post("/api/pelicula", {
+          titulo: pelicula.titulo,
+          director: pelicula.director,
+          fecha_estreno: pelicula.fecha_estreno,
+          duracion: pelicula.duracion,
+          sinopsis: pelicula.sinopsis,
+          codigo_api: pelicula.codigo_api, // Asumiendo que este campo debe ser manejado también
+          poster_path_api: pelicula.poster_path_api,
+          wallpaper_path_api: pelicula.wallpaper_path_api,
+          trailer_path_api: pelicula.trailer_path_api,
+        });
+        commit("ADD_PELICULA", response.data);
       } catch (error) {
-          console.error('Error adding movie:', error);
+        console.error("Error adding movie:", error);
       }
-  }
+    },
+    async fetchFuncionDetails(_,id) {
+      try {
+        return await axios.get(`/api/funcion/${id}`);
+      } catch (error) {
+        console.error("Error fetching movie from backend:", error);
+        throw error;
+      }
+    },
   },
 
   modules: {},

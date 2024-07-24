@@ -1,18 +1,19 @@
 import { createRouter, createWebHashHistory } from "vue-router";
 import AppContainer from "@/AppContainer.vue";
-import CarteleraView from '@/views/CarteleraView.vue';
-import LoginView from '@/views/LoginView.vue';
+import CarteleraView from "@/views/CarteleraView.vue";
+import LoginView from "@/views/LoginView.vue";
 import PeliculasUsuarioView from "@/views/PeliculasView.vue";
-import CinesUsuarioView from '@/views/CinesView.vue';
-import AdministradorView from '@/views/AdministradorView.vue';
-import CiudadesView from '@/views/administrador/CiudadesView.vue';
-import CinesView from '@/views/administrador/CinesView.vue';
-import SalasView from '@/views/administrador/SalasView.vue';
-import TiposEntradaView from '@/views/administrador/TiposEntradaView.vue';
-import PeliculasView from '@/views/administrador/PeliculasView.vue';
-import FuncionesView from '@/views/administrador/FuncionesView.vue';
-import AgregarPeliculaView from '@/views/administrador/AgregarPeliculaView.vue';
-import DetallePeliculaView from '@/views/DetallePeliculaView.vue'; // Importar la nueva vista
+import CinesUsuarioView from "@/views/CinesView.vue";
+import AdministradorView from "@/views/AdministradorView.vue";
+import CiudadesView from "@/views/administrador/CiudadesView.vue";
+import CinesView from "@/views/administrador/CinesView.vue";
+import SalasView from "@/views/administrador/SalasView.vue";
+import TiposEntradaView from "@/views/administrador/TiposEntradaView.vue";
+import PeliculasView from "@/views/administrador/PeliculasView.vue";
+import FuncionesView from "@/views/administrador/FuncionesView.vue";
+import AgregarPeliculaView from "@/views/administrador/AgregarPeliculaView.vue";
+import DetallePeliculaView from "@/views/DetallePeliculaView.vue"; // Importar la nueva vista
+import ComprarEntradaView from "@/views/ComprarEntradaView.vue";
 
 const routes = [
   {
@@ -75,14 +76,37 @@ const routes = [
           { path: "ciudades", component: CiudadesView, name: "ciudades" },
           { path: "cines", component: CinesView, name: "cines-admin" },
           { path: "salas", component: SalasView, name: "salas" },
-          { path: "tipos-entrada", component: TiposEntradaView, name: "tipos-entrada" },
-          { path: "peliculas", component: PeliculasView, name: "peliculas-admin" },
+          {
+            path: "tipos-entrada",
+            component: TiposEntradaView,
+            name: "tipos-entrada",
+          },
+          {
+            path: "peliculas",
+            component: PeliculasView,
+            name: "peliculas-admin",
+          },
           { path: "funciones", component: FuncionesView, name: "funciones" },
-          { path: "peliculas/nuevo", component: AgregarPeliculaView, name: "agregar-pelicula" },
+          {
+            path: "peliculas/nuevo",
+            component: AgregarPeliculaView,
+            name: "agregar-pelicula",
+          },
         ],
       },
     ],
-  }
+  },
+  {
+    path: "/funcion/:id/:hora",
+    component: AppContainer,
+    children: [
+      {
+        path: "",
+        name: "FuncionDetalle",
+        component: ComprarEntradaView, // Asegúrate de tener este componente creado
+      },
+    ],
+  },
 ];
 
 const router = createRouter({
