@@ -13,7 +13,7 @@
                     {{ producto.precio }}
                 </v-col>
                 <v-col>
-                    <v-number-input v-model="cantidad" min="0" max="10" inset controlVariant="split"></v-number-input>
+                    <v-number-input   :model-value="0" min="0" max="10" inset controlVariant="split"></v-number-input>
                 </v-col>
             </v-row>
         </v-card-text>
