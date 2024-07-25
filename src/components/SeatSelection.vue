@@ -49,3 +49,20 @@ export default {
     }
 };
 </script>
+<style scoped>
+.screen-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.screen {
+    width: 80%;
+    text-align: center;
+    font-weight: bold;
+    background-color: lightgray;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 0 auto 20px auto; /* Centra y agrega espacio inferior */
+}
+</style>

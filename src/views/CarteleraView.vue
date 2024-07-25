@@ -51,13 +51,13 @@ export default {
   data: () => ({
     items: [
       {
-        src: 'https://cinemarkla.modyocdn.com/uploads/f1ce9b94-4046-4971-b502-e85dfdb86340/original/banners-web-dyw.png',
+        src: 'https://cinemarkla.modyocdn.com/uploads/d717d70d-251b-46ee-af0a-fe88f7fa1dd1/original/BANNER_WEB_DEADPOOL_WOLVERINE.png',
       },
       {
-        src: 'https://cinemarkla.modyocdn.com/uploads/2156d99b-b644-4f96-a481-ac21f0726077/original/BANNER_WEB_MVF_COMBOS.png',
+        src: 'https://cinemarkla.modyocdn.com/uploads/623ea462-b588-4bd2-9425-78911afccc25/original/banner-promo-online-julio.png',
       },
       {
-        src: 'https://cinemarkla.modyocdn.com/uploads/92407a9d-73fa-4201-8e07-de696eba3c7c/original/BANNER-web-mvf-2.png',
+        src: 'https://cinemarkla.modyocdn.com/uploads/47ff1ac8-a13b-4d7c-8fcf-bf4ea7cae072/original/BANNER_WEB_COMBO_PERUANO.png',
       }
     ],
     search: '',

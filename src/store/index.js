@@ -4,6 +4,7 @@ import axios from "axios";
 export default createStore({
   state: {
     user: null,
+    productos: [],
     tipos_entradas: [],
     peliculas: [],
     salas: [],
@@ -58,6 +59,9 @@ export default createStore({
     UPDATE_ASIENTO(state, { rowIndex, colIndex, color }) {
       state.localAsientos[rowIndex][colIndex].color = color;
     },
+    SET_PRODUCTOS(state,productos){
+      state.productos = productos
+    }
   },
   actions: {
     async login({ dispatch }, credentials) {
@@ -211,6 +215,12 @@ export default createStore({
         throw error;
       }
     },
+    async fetchProductos({ commit }) {
+      // Aquí iría tu llamada a la API para obtener los productos
+      const response = await axios.get("/api/productos");
+      commit('SET_PRODUCTOS', response.data);
+      return response;
+  },
   },
 
   modules: {},
